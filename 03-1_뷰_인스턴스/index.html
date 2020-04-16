@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Instance Lifecycle</title>
+</head>
+
+<body>
+  <div id="app">
+    {{ message }}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+    new Vue({
+      el: "#app",
+
+      data: {
+        message: "Hello Vue.js!"
+      },
+
+      // @Override - Vue객체 생성 전, 호출
+      beforeCreate() {
+        console.log("beforeCreate");
+      },
+
+      // @Override - Vue객체 생성 후, 호출
+      created() {
+        console.log("created");
+      },
+
+      // @Override - 화면에 Vue객체가 부착된 후, 호출
+      mounted() {
+        console.log("mounted");
+        this.message = "Hello Vue~~~";
+      },
+
+      // @Override - Vue의 프로퍼티값이 변경되고, 화면이 갱신된 후, 호출
+      updated() {
+        console.log("updated");
+      }
+    });
+  </script>
+</body>
+</html>
