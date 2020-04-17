@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component Communication</title>
+</head>
+
+<body>
+  <div id="app">
+    <child-component v-bind:my-data="message"></child-component>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const eventBus = new Vue();
+    
+    
+    Vue.component("child-component", {
+      props: [
+        "my-data"
+      ],
+
+      template: `
+        <div>
+          <p>받은 데이터: {{ myData }}</p>
+          <input type="button" value="부모로 전달" v-on:click="sendEvent">
+        </div>
+
+      `,
+
+      data: function() {
+        return { yourData: "It is Vue" };
+      },
+
+      methods: {
+        sendEvent: function() {
+          eventBus.$emit("sendToParent", `(Send)${this.myData}`);
+        }
+      }
+    });
+
+
+    new Vue({
+      el: "#app",
+
+      data: function() {
+        return { message: "Hello Vue"};
+      },
+
+      created: function() {
+        eventBus.$on("sendToParent", function(param) {
+          alert(`param: ${param}`);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

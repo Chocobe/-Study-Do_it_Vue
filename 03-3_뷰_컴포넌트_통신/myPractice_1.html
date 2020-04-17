@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>부모 -> 자식 데이터 전송</title>
+</head>
+
+<body>
+  <div id="app">
+    <child-component v-bind:my-data="message"></child-component>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    Vue.component("child-component", {
+      template: `
+        <div>
+          <h1>전달받은 데이터: {{ myData }}</h1>
+        </div>
+      `,
+
+      props: [
+        "my-data"
+      ]
+    });
+
+
+    new Vue({
+      el: "#app",
+
+      data: {
+        message: "부모 데이터"
+      }
+    });
+  </script>
+</body>
+</html>

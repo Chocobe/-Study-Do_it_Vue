@@ -6,6 +6,10 @@
 
 * Vue Component가 출력할 내용은, ``template 프로퍼티`` 로 작성할 수 있다.
 
+* ``template 프로퍼티``에는 root태그 역할의 태그가 **한개만** 있어야 한다.
+
+* ``template 프로퍼티``의 root태그 하위에는 얼마든지 자식태그를 사용할 수 있다.
+
 
 ---
 
@@ -72,9 +76,11 @@
 
           components: {
             "my-local-component-1": localComponent_1,
-            "my-local-component-2": `
-              <div>localComponent_2 입니다.</div>
-            `
+            "my-local-component-2": {
+              template: `
+                <div>localComponent_2 입니다.</div>
+              `
+            }
           }
         });
       </script>

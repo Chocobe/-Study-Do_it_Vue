@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자식->부모 데이터 전송</title>
+</head>
+
+<body>
+  <div id="app">
+    <child-component></child-component>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    // 이벤트버스 생성
+    const eventBus = new Vue();
+        
+
+    // componemt 생성
+    Vue.component("child-component", {
+      template: `
+        <div>
+          <input type="button" value="부모로 데이터 전송" v-on:click="emitEvent">
+        </div>
+      `,
+
+      data: function() {
+        return {
+          message: "Hello, Vue !!"
+        };
+      },
+
+      methods: {
+        emitEvent: function() {
+          eventBus.$emit("sendToParent", this.message);
+        }
+      }
+    });
+
+
+    // "#app" Vue 인스턴스
+    new Vue({
+      el: "#app",
+
+      created: function() {
+        eventBus.$on("sendToParent", function(param) {
+          alert(`전달받은 데이터: ${param}`);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
