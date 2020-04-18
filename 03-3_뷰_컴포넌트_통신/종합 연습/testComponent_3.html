@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component Data Communication Practice</title>
+
+  <style type="text/css">
+    #xermes-app {
+      display: grid;
+      grid-template-columns: 2;
+      grid-template-rows: 2;
+    }
+  
+    .menu {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="xermes-app">
+    <xermes-header-component></xermes-header-component>
+
+    <hr/><hr/>
+    
+    <xermes-nav-component class="menu"></xermes-nav-component>
+
+    <hr/><hr/>
+    
+    <xermes-article-component></xermes-article-component>
+    
+    <hr/><hr/>
+
+    <test-component :init-data="parentData"></test-component>
+    <p>parentData : {{ parentData }}</p>
+
+    <br/><br/><hr/><hr/>
+    
+    <xermes-footer-component></xermes-footer-component>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+    // (EventBus) eventBus
+    const eventBus = new Vue();
+  
+  
+    // (Component) xermes-header-component
+    const xermesHeaderSchema = {
+      template: `
+        <div id="xermes-header">
+          <span class="logo" style="font-size:2em;">Xermes</span>
+        </div>
+      `
+    };
+
+
+    // (Component) xermes-nav-component
+    const xermesNavSchema = {
+      template: `
+        <div id="xermes-nav">
+          <ul>
+            <li>메뉴_1</li>
+            <li>메뉴_2</li>
+            <li>메뉴_3</li>
+            <li>메뉴_4</li>
+            <li>메뉴_5</li>
+          </ul>
+        </div>
+      `
+    };
+
+
+    // (Component) xermes-article-component
+    const xermesArticleSchema = {
+      template: `
+        <div id="xermes-article-component">
+          국회는 의장 1인과 부의장 2인을 선출한다. 대법원과 각급법원의 조직은 법률로 정한다. 
+          대통령의 선거에 관한 사항은 법률로 정한다. 대법관의 임기는 6년으로 하며, 법률이 정하는 바에 의하여 연임할 수 있다.
+          <br/><br/>
+          국가는 과학기술의 혁신과 정보 및 인력의 개발을 통하여 국민경제의 발전에 노력하여야 한다. 
+          대통령은 국무총리·국무위원·행정각부의 장 기타 법률이 정하는 공사의 직을 겸할 수 없다.
+          <br/><br/>
+          모든 국민은 능력에 따라 균등하게 교육을 받을 권리를 가진다. 
+          모든 국민은 법률이 정하는 바에 의하여 국가기관에 문서로 청원할 권리를 가진다. 
+          대한민국의 경제질서는 개인과 기업의 경제상의 자유와 창의를 존중함을 기본으로 한다.
+          <br/><br/>
+          국회가 재적의원 과반수의 찬성으로 계엄의 해제를 요구한 때에는 대통령은 이를 해제하여야 한다. 
+          헌법에 의하여 체결·공포된 조약과 일반적으로 승인된 국제법규는 국내법과 같은 효력을 가진다.
+        </div>
+      `
+    };
+
+
+    // (Component) xermes-footer-component
+    const xermesFooterSchema = {
+      template: `
+        <div id="xermes-footer-component">
+          <p>
+            주소: ___<br/>
+            전화번호: __________<br/>
+            팩스: _________<br/>
+          </p>
+        </div>
+      `
+    };
+
+
+    // (Component) test-component
+    const testComponentSchema = {
+      template: `
+        <div id="test-component">
+          <h1>Test 컴포넌트</h1>
+        
+          <div id="counter-test">
+            <p>
+              
+              <input type="button" value="-10" @click="operateCounter(-10)">
+              <input type="button" value="-1" @click="operateCounter(-1)">
+              카운트: {{ counter }}
+              <input type="button" value="1" @click="operateCounter(1)">
+              <input type="button" value="10" @click="operateCounter(10)">
+            </p>
+          </div>
+
+          <hr/>
+
+          <div id="component-data-communication-test">
+            <p>childData값: {{ childData }}</p>
+            <p>입력창: <input type="text" placeholder="데이터를 입력하세요" @keyup="changeData"></p>
+          </div>
+        </div>
+      `,
+
+      props: [
+        "init-data"
+      ],
+
+      data: () => {
+        return {
+          counter: 0,
+          childData: this.initData
+        };
+      },
+
+      methods: {
+        operateCounter: function(value) {
+          this.counter += value;
+        },
+
+        changeData: function(event) {
+          this.childData = event.target.value;
+          eventBus.$emit("changeDataEvent", this.childData);
+        }
+      },
+
+      created: function() {
+        this.childData = this.initData;
+      }
+    };
+
+  
+    // (VM) xermes-app
+    const xermesApp = new Vue({
+      el: "#xermes-app",
+
+      components: {
+        "xermes-header-component": xermesHeaderSchema,
+        "xermes-nav-component": xermesNavSchema,
+        "xermes-article-component": xermesArticleSchema,
+        "test-component": testComponentSchema,
+        "xermes-footer-component": xermesFooterSchema
+      },
+
+      data: () => {
+        return {
+          parentData: "Hello Vue"
+        };
+      },
+
+      created: function() {
+        eventBus.$on("changeDataEvent", function(value) {
+          xermesApp.parentData = value;
+        });
+      }
+    });
+  </script>
+</body>
+</html>
