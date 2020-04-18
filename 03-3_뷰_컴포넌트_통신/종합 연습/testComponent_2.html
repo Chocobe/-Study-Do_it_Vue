@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component data Communication</title>
+</head>
+
+<body>
+  <div id="vm_1">
+    <h1>vm_1 scope</h1>
+    <hr/>
+
+    <div class="counter">
+      <p>현재 카운터: {{ counter }}</p>
+      <input type="button" value="+10" @click="emitCounter(10)">
+      <input type="button" value="+1" @click="emitCounter(1)">
+      <input type="button" value="-1" @click="emitCounter(-1)">
+      <input type="button" value="-10" @click="emitCounter(-10)">
+    </div>
+    <hr/>
+
+    <div class="child-component">
+      <p><small>( 부모 초기값: {{ parentInitData }} )</small></p>
+      <p>부모 데이터: {{ parentData }}</p>
+
+      <br/>
+
+      <child-component :child-data="parentInitData" 
+                       v-model:child-model-data="parentModelData"></child-component>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+    // (Event Bus) eventBus
+    const eventBus = new Vue();
+  
+  
+    // (Local Component Schema) localComponent
+    const localComponent = {
+      props: [
+        "child-data"
+      ],
+
+      data: () => {
+        return {
+          childModelData: ""
+        };
+      },
+
+      template: `
+        <div>
+          <p>childData값: {{ childData }}</p>
+          <input type="text" placeholder="데이터 입력" @keyup="changeData">
+
+          <br/>
+
+          <p>v-model을 이용한 컴포넌트 양방향 데이터 통신</p>
+          <p>
+            부모의 parentModelValue: {{ childModelData }}<br/>
+            <input type="text" placeholder="v-model테스트" @keyup="changeModelData">
+          </p>
+        </div>
+      `,
+
+      methods: {
+        changeData: function(event) {
+          eventBus.$emit("changeDataEvent", event.target.value);
+        },
+
+        changeModelData: function(event) {
+          this.childModelData = event.target.value;
+        }
+      }
+    };
+  
+  
+    // (VM) vm_1
+    const vm_1 = new Vue({
+      el: "#vm_1",
+
+      components: {
+        "child-component": localComponent,
+      },
+
+      data: () => {
+        return {
+          counter: 0,
+          parentInitData: "부모 초기값",
+          parentData: "",
+          parentModelData: "(부모)v-model 테스트 초기화"
+        };
+      },
+
+      methods: {
+        emitCounter: function(value) {
+          this.$emit("counterEvent", value);
+        }
+      },
+
+      created: function() {
+        this.parentData = this.parentInitData;
+        
+        this.$on("counterEvent", (value) => {
+          this.counter += value;
+        });
+
+        eventBus.$on("changeDataEvent", (value) => {
+          vm_1.parentData = value;
+        });
+      }
+    });
+  </script>
+</body>
+</html>

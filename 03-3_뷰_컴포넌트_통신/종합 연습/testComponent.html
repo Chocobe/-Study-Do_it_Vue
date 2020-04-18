@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Component data Communication</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Vue 인스턴스 "#app" scope</h1>
+    <p>initData 프로퍼티값: {{ initData }}</p>
+    <p>message 프로퍼티값: {{ message }}</p>
+    <p>
+      카운터: {{ counter }} : <input type="button" value="카운터증가" v-on:click="callCounterEvent">
+    </p>
+    <p>
+      문자열 변경: <b>{{ myString }}</b> : <input type="button" value="문자열 변경" v-on:click="changeString">
+    </p>
+
+    <hr/>
+    
+    <child-component :child-data="initData"></child-component>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+    // (Event Bus) eventBus
+    const eventBus = new Vue();
+  
+  
+    // (Global Component) child-component
+    const childComponent = Vue.component("child-component", {
+      props: [
+        "child-data"
+      ],
+
+      template: `
+        <div>
+          <h1>Child Component scope</h1>
+          <p>childData 프로퍼티값: {{ childData }}</p>
+          <input type="button" v-bind:value="childData" v-on:click="sendToParent">
+        </div>
+      `,
+
+      methods: {
+        sendToParent: function() {
+          eventBus.$emit("chocobeEvent", "(자식객체의)" + this.childData);
+        }
+      }
+    });
+
+
+    // (Vue Instance) app
+    const app = new Vue({
+      el: "#app",
+
+      data: () => {
+        return {
+          initData: "<초기화값 from Parent>",
+          message: "<부모 message>",
+          counter: 0,
+          myString: "초기값"
+        };
+      },
+
+      created: function() {
+        eventBus.$on("chocobeEvent", function(param) {
+          alert(`전달받은 데이터: ${param}`);
+
+          app.message = param;
+          alert(`부모message: ${app.message}`);
+        });
+
+        this.$on("myCounter", function() {
+          this.counter++;
+        });
+
+        this.$on("changeMyString", function(newValue) {
+          this.myString = newValue;
+        });
+      },
+
+      methods: {
+        callCounterEvent: function() {
+          this.$emit("myCounter");
+        },
+
+        changeString: function() {
+          this.$emit("changeMyString", "변경된값");
+        }
+      }
+    });
+  </script>
+</body>
+</html>
