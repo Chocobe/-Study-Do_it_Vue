@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Router 연습문제 복습</title>
+</head>
+
+<body>
+  <div id="app">
+    <router-view name="header"></router-view>
+    <router-view></router-view>
+    <router-view name="footer"></router-view>
+  </div>  
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script type="text/javascript">
+    const indexHeaderSchema = {
+      template: `
+        <div id="index-header">
+          <h3>Index Header Component</h3>
+        </div>
+      `
+    };
+
+    
+    const indexBodySchema = {
+      template: `
+        <div id="index-body">
+          <h1>Index Body Component 입니다.</h1>
+        </div>
+      `
+    };
+
+
+    const indexFooterSchema = {
+      template: `
+        <div id="index-footer">
+          <h3>Index Footer Component</h3>
+        </div>
+      `
+    };
+
+
+    const loginHeaderSchema = {
+      template: `
+        <div id="login-header">
+          <h3 style="color: peru;">Login Header Component</h3>
+        </div>
+      `
+    };
+
+
+    const loginBodySchema = {
+      template: `
+        <div id="login-body">
+          <h1 style="color: magenta;">Login Body Component</h1>
+        </div>
+      `
+    };
+
+
+    const loginFooterSchema = {
+      template: `
+        <div id="login-footer">
+          <h3 style="color: peru;">Login Footer Component</h3>
+        </div>
+      `
+    };
+
+
+    const router = new VueRouter({
+      routes: [
+        {
+          path: "/",
+          components: {
+            header: indexHeaderSchema,
+            default: indexBodySchema,
+            footer: indexFooterSchema
+          }
+        },
+
+        {
+          path: "/login",
+          components: {
+            header: loginHeaderSchema,
+            default: loginBodySchema,
+            footer: loginFooterSchema
+          }
+        }
+      ]
+    });
+
+
+    const app = new Vue({
+      router
+    }).$mount("#app");
+  </script>
+</body>
+</html>

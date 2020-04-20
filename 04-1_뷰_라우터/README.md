@@ -4,6 +4,8 @@
 
 * 라우터로 출력할 페이지를 모두 로딩해 놓은 뒤, 요청에 따른 페이지를 출력하는 방식
 
+* 공식 사이트에서는 Vue 인스턴스의 ``el: 뷰영역명`` 대신 ``new Vue({ }).$mount("뷰명역명");`` 을 사용한다. (동작은 동일하다)
+
   ```html
     <body>
       <div id="app">
@@ -138,6 +140,120 @@
         });
 
 
+        const app = new Vue({
+          router
+        }).$mount("#app");
+      </script>
+    </body>
+  ```
+
+
+---
+
+
+## 🐫 네임드 뷰(Named View)
+
+* 하나의 **url**에 대해서 여러개의 컴포넌트를 동시에 표시하는 라우팅 방식
+
+* 각 컴포넌트는 같은 레벨에서 존재하게 된다.
+
+  ```html
+    <body>
+      <div id="app">
+        <router-view name="header"></router-view>
+        <router-view><router-view>
+        <common-footer></common-footer>
+      </div>
+
+
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+      <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+      <script type="text/javascript">
+        // index header 컴포넌트
+        const indexHeaderSchema = {
+          template: `
+            <div id="index-header">
+              <h3>Index Header Component</h3>
+            </div>
+          `
+        };
+
+
+        // index body 컴포넌트
+        const indexBodySchema = {
+          template: `
+            <div id="index-body">
+              <h1>Index Body Component</h1>
+            </div>
+          `
+        };
+
+
+        // login header 컴포넌트
+        const loginHeaderSchema = {
+          template: `
+            <div id="login-header">
+              <h3>Login Header 컴포넌트</h3>
+            </div>
+          `
+        };
+
+
+        // login body 컴포넌트
+        const loginBodySchema = {
+          template: `
+            <div id="login-body">
+              <h1>Login Body 컴포넌트</h1>
+            </div>
+          `
+        };
+
+
+        // index footer 컴포넌트
+        const indexFooterSchema = {
+          template: `
+            <div id="index-footer">
+              <h3>Index Footer Component</h3>
+            </div>
+          `
+        };
+
+
+        // login footer 컴포넌트
+        const loginFooterSchema = {
+          template: `
+            <div id="login-footer">
+              <h3>Login Footer Component</h3>
+            </div>
+          `
+        };
+
+
+        // router 생성
+        const router = new VueRouter({
+          routes: [
+            {
+              path: "/",
+              components: {
+                header: indexHeaderSchema,
+                default: indexBodySchema,
+                footer: indexFooterSchema
+              }
+            },
+
+            {
+              path: "/login",
+              components: {
+                header: loginHeaderSchema,
+                default: loginBodySchema,
+                footer: loginFooterSchema
+              }
+            }
+          ]
+        });
+
+
+        // (VM) "#app"
         const app = new Vue({
           router
         }).$mount("#app");

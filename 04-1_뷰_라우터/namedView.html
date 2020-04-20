@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네임드 뷰</title>
+</head>
+
+<body>
+  <div id="app">
+    <router-view name="header"></router-view>
+    <router-view></router-view>
+    <router-view name="footer"></router-view>
+  </div>  
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script type="text/javascript">
+    const Header = {
+      template: `
+        <div>This is Header</div>
+      `
+    };
+
+
+    const Body = {
+      template: `
+        <div>
+          <h1>This is Body</h1>
+        </div>
+      `
+    };
+
+
+    const Footer = {
+      template: `
+        <div>
+          <h1>This is Footer</h1>
+        </div>
+      `
+    };
+
+
+    const router = new VueRouter({
+      routes: [
+        {
+          path: "/",
+          components: {
+            default: Body,
+            header: Header,
+            footer: Footer
+          }
+        }
+      ]
+    });
+
+
+    const app = new Vue({
+      router
+    }).$mount("#app");
+  </script>
+</body>
+</html>
