@@ -68,3 +68,79 @@
       </script>
     </body>
   ```
+
+
+---
+
+
+## 🐫 네스티드 라우터(Nested Router)
+
+* 상위 컴포넌트가 하위 컴포넌트 하나를 포함하는 구조의 라우터
+
+  ```html
+    <body>
+      <div id="app">
+        <router-view></router-view>
+      </div>
+
+
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+      <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+      <script type="text/javascript">
+        const UserComponentSchema = {
+          template: `
+            <div>
+              <h1>User Component</h1>
+            </div>
+          `
+        };
+
+
+        const UserProfileComponentSchema = {
+          template: `
+            <div>
+              <h3>UserProfile Component</h3>
+            </div>
+          `
+        };
+
+
+        const UserPostsComponentSchema = {
+          template: `
+            <div>
+              <h3>UserPosts Component</h3>
+            </div>
+          `
+        };
+
+
+        const routes = [
+          {
+            path: "/user",
+            component: UserComponentSchema,
+            children: [
+              {
+                path: "profile",
+                component: UserProfileSchema
+              },
+
+              {
+                path: "posts",
+                component: UserPostsSchema
+              }
+            ]
+          }
+        ];
+
+
+        const router = new VueRouter({
+          routes
+        });
+
+
+        const app = new Vue({
+          router
+        }).$mount("#app");
+      </script>
+    </body>
+  ```
