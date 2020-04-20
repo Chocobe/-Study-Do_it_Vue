@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>axios & router</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1>axios & router TEST</h1>
+
+    <router-view name="header"></router-view>
+    <router-view name="menu"></router-view>
+    <router-view name="body"></router-view>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript">
+    // header Schema
+    const headerSchema = {
+      template: `
+        <div id="header-component">
+          <h3>Header Component</h3>
+        </div>
+      `
+    };
+
+
+    // menu Schema
+    const menuSchema = {
+      template: `
+        <div id="menu-schema">
+          <ul>
+            <li>메뉴_1</li>
+            <li>메뉴_2</li>
+            <li>메뉴_3</li>
+          </ul>
+        </div>
+      `
+    };
+
+
+    // body Schema
+    const bodySchema = {
+      template: `
+        <div id="body-component">
+          <h1>Body Component</h1>
+          <my-axios-component></my-axios-component>
+        </div>
+      `
+    };
+
+
+    // (Global Component) my-axios-component
+    const myAxiosComponent = Vue.component("my-axios-component", {
+      template: `
+        <div id="my-axios-component">
+          <h2>axios를 이용한 비동기 요청</h2>
+          <input type="button" value="(GET)데이터 요청" @click="getData">
+          <p>데이터: {{ selectedData }}</p>
+        </div>
+      `,
+
+      data: () => {
+        return {
+          selectedData: "nothing"
+        };
+      },
+
+      methods: {
+        getData: function() {
+          axios.get("https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json")
+               .then((response) => {
+                 this.selectedData = response.data;
+               });
+        }
+      }
+    });
+
+
+    // router
+    const router = new VueRouter({
+      routes: [
+        {
+          path: "/",
+          components: {
+            header: headerSchema,
+            menu: menuSchema,
+            body: bodySchema
+          }
+        }
+      ]
+    });
+
+
+    // (VM) "#app"
+    const app = new Vue({
+      router
+    }).$mount("#app");
+  </script>
+</body>
+</html>

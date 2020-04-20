@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axios 테스트</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Axios 테스트</h1>
+    <input type="button" value="프레임워크 데이터 조회" @click="getData">
+    <p>조회결과: {{ selectData }}</p>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript">
+    const app = new Vue({
+      data: () => {
+        return {
+          selectData: "nothing"
+        };
+      },
+
+      methods: {
+        getData: function() {
+          axios.get("https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json")
+               .then((response) => {
+                 app.selectData = response.data;
+               })
+               .catch((e) => {
+                 alert(e);
+               })
+               .then(() => {
+                 console.log("axios 동작완료");
+               });
+        }
+      }
+    }).$mount("#app");
+  </script>
+</body>
+</html>

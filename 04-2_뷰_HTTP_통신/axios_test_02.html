@@ -3,32 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>액시오스</title>
+  <title>Axios Practice</title>
 </head>
 
 <body>
+  <h1>Axios 연습</h1>  
   <div id="app">
-    <button v-on:click="getData">프레임워크 목록 가져오기</button>
-    <h1>결과 : {{ myData }}</h1>
-    <h1>결과 : {{ tempData }}</h1>
+    <h3>결과: {{ selectData }}</h3>
+    <input type="button" value="(GET방식) 데이터 조회" @click="getData">
   </div>
 
+
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script type="text/javascript">
     const app = new Vue({
       data: {
-        myData: "",
-        tempData: "Hello~"
+        selectData: "nothing"
       },
 
       methods: {
         getData: function() {
+          console.log(this);
           axios.get("https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json")
-                    .then(function(response) {
-                      app.myData = response.data;
-                      console.log(app.myData);
-                    });
+               .then((response) => {
+                 this.selectData = response.data;
+
+                 console.log(axios);
+               });
         }
       }
     }).$mount("#app");
