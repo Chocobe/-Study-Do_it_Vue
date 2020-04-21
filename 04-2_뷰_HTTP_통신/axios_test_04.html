@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>axios 테스트 04</title>
+</head>
+
+<body>
+  <div id="app">
+    <router-view name="header"></router-view>
+    <router-view name="menu"></router-view>
+    <router-view></router-view>
+    <router-view name="footer"></router-view>
+  </div>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript">
+    // header Schema
+    const headerSchema = {
+      template: `
+        <div id="header-component">
+          <h3>Header Component</h3>
+        </div>
+      `
+    };
+
+
+    // menu Schema
+    const menuSchema = {
+      template: `
+        <div id="menu-component">
+          <ul>
+            <li>메뉴_1</li>
+            <li>메뉴_2</li>
+            <li>메뉴_3</li>
+            <li>메뉴_4</li>
+            <li>메뉴_5</li>
+          </ul>
+        </div>
+      `
+    };
+
+
+    // footer Schema
+    const footerSchema = {
+      template: `
+        <div id="footer-component">
+          <p>
+            footer_내용_1</br>
+            footer_내용_2</br>
+            footer_내용_3
+          </p>
+        </div>
+      `
+    };
+
+
+    // index Schema
+    const indexSchema = {
+      template: `
+        <div id="index-component">
+          <index-component></index-component>
+        </div>
+      `
+    };
+
+
+    // (Global Component) index component
+    const indexComponent = Vue.component("index-component", {
+      template: `
+        <div>
+          <h1>Index 페이지 입니다.</h1>
+          <router-link to="/getTest">GET방식 axios 테스트</router-link>
+        </div>
+      `
+    });
+
+
+    // axiosGetterSchema
+    const axiosGetterSchema = {
+      template: `
+        <div id="axios-getter-component">
+          <axios-getter-component></axios-getter-component>
+          <router-link to="/">Index 페이지</router-link>
+        </div>
+      `
+    };
+
+
+    // (Global Component) axios component
+    const axiosComponent = Vue.component("axios-getter-component", {
+      template: `
+        <div>
+          <h1>Axios Getter 페이지 입니다.</h1>
+          <input type="button" value="(GET) axios 데이터 요청" v-on:click="getData"><br/>
+          <p>받은 데이터: {{ selectedData }}</p>
+        </div>
+      `,
+
+      data: () => {
+        return {
+          selectedData: "Initial Data"
+        };
+      },
+
+      methods: {
+        getData: function() {
+          axios.get("https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json")
+
+               .then((resource) => {
+                 this.selectedData = resource.data;
+               })
+
+               .catch((e) => {
+                 alert(e);
+               })
+               
+               .then(() => {
+                 console.log("axios 데이터 요청 동작종료");
+               });
+        }
+      }
+    });
+
+
+    // router
+    const router = new VueRouter({
+      routes: [
+        { path: "/",
+          components: {
+            header: headerSchema,
+            menu: menuSchema,
+            default: indexSchema,
+            footer: footerSchema
+          }
+        },
+
+        { path: "/getTest",
+          components: {
+            header: headerSchema,
+            menu: menuSchema,
+            default: axiosGetterSchema,
+            footer: footerSchema
+          }
+        }
+      ]
+    });
+
+
+    // (vm) "#app"
+    const app = new Vue({
+      router
+    }).$mount("#app");
+  </script>
+</body>
+</html>

@@ -10,6 +10,8 @@
 
   # ``익명함수의 this`` != ``람다의 this``
 
+* 테스트용 JSON 데이터: ``https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json``
+
 
 ---
 
