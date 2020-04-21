@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>watch 속성</title>
+</head>
+
+<body>
+  <div id="app">
+    <input v-model="message_1" placeholder="message_1 입력"><br/>
+    <input type="text" v-model:value="message_2" placeholder="message_2 입력">
+  </div>  
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="text/javascript">
+    const app = new Vue({
+      data: {
+        message_1: "",
+        message_2: ""
+      },
+
+      watch: {
+        message_1: function(newData) {
+          console.log(`(message_1) 새로운값: ${newData}`);
+        },
+
+        message_2: function(newData) {
+          console.log(`(message_2) 새로운값: ${newData}`);
+        }
+      }
+    }).$mount("#app");
+  </script>
+</body>
+</html>
