@@ -101,3 +101,50 @@
   ```html
     <input type="text v-model:value="myMessage">
   ```
+
+
+  ---
+
+
+  ## 🐫 computed와 method
+
+  * 탬플릿태그(``{{ }}``)에 연산을 사용할 수 있지만, 가독성을 위해 뷰객체에서 연산하고 결과를 사용하는 것을 추천한다.
+
+  * 뷰객체에서 연산을 처리하는 방법에는 ``computed``와 ``method``가 있다.
+
+  * ``computed``는 연산의 결과를 캐싱(caching)하고, 사용된 변수의 값이 변경 될 경우, 다시 연산하는 방식이다.
+
+  * ``method``는 호출 시, 매번 연산하여 결과를 반환하는 방식이다.
+
+  * 복잡한 연산을 반복수행하여 화면에 출력할 경우, ``computed``가 더 효율적이다.
+
+    ```html
+      <body>
+        <div id="app">
+          <p>message변수값: {{ message }}</p>
+          <p>computed값: {{ computedMessage }}</p>
+          <input type="button" value="Reverse Message" v-on:click="reverseMessage">
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript">
+          const app = new Vue({
+            data: {
+              message: "Hello Vue!"
+            },
+
+            computed: {
+              computedMessage: function() {
+                return this.message.split("").reverse().join("");
+              }
+            },
+
+            methods: {
+              reverseMessage: function() {
+                this.message = this.message.split("").reverse().join("");
+              }
+            }
+          }).$mount("#app");
+        </script>
+      </body>
+    ```
