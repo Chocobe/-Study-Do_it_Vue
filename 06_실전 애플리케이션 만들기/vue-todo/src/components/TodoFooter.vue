@@ -9,7 +9,7 @@
 export default {
   methods: {
     clearToDo() {
-      localStorage.clear();
+      this.$emit("removeAll");
     }
   }
 }
