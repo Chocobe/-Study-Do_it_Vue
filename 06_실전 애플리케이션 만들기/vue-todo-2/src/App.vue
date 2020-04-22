@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-on:keyup.esc="myTest">
+  <div id="app">  
     <todo-header></todo-header>
     <todo-input v-on:addToDo="addToDo"></todo-input>
     <todo-list v-bind:propsData="todoItems" v-on:removeToDo="removeToDo"></todo-list>
@@ -9,16 +9,16 @@
 
 
 <script>
-import TodoHeader from "./components/TodoHeader.vue";
-import TodoInput from "./components/TodoInput.vue";
-import TodoList from "./components/TodoList.vue";
-import TodoFooter from "./components/TodoFooter.vue";
+import ToDoHeader from "./components/ToDoHeader.vue";
+import ToDoInput from "./components/ToDoInput.vue";
+import ToDoList from "./components/ToDoList.vue";
+import ToDoFooter from "./components/ToDoFooter.vue";
 
 export default {
   data() {
     return {
       todoItems: []
-    }
+    };
   },
 
   methods: {
@@ -35,10 +35,6 @@ export default {
     removeToDo(todoItem, index) {
       localStorage.removeItem(todoItem);
       this.todoItems.splice(index, 1);
-    },
-
-    myTest() {
-      alert("테스트");
     }
   },
 
@@ -47,14 +43,14 @@ export default {
       for(let i = 0; i < localStorage.length; i++) {
         this.todoItems.push(localStorage.key(i));
       }
-    }   
+    }
   },
   
   components: {
-    "todo-header": TodoHeader,
-    "todo-input": TodoInput,
-    "todo-list": TodoList,
-    "todo-footer": TodoFooter
+    "todo-header": ToDoHeader,
+    "todo-input": ToDoInput,
+    "todo-list": ToDoList,
+    "todo-footer": ToDoFooter
   }
 }
 </script>
@@ -63,12 +59,13 @@ export default {
 <style>
   body {
     text-align: center;
+    font-family: 'Ubuntu', sans-serif;
     background-color: #f6f6f8;
   }
 
   input {
-    border-style: groove;
     width: 200px;
+    border-style: groove;
   }
 
   button {
