@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  
+  <body>
+    <div id="myApp"></div>
+
+    <script>
+      Vue.component("my-button", {
+        render(createElement) {
+          return createElement(
+            // 태그명
+            "button", 
+
+            // 템플릿 속성
+            {
+              // inline 스타일
+              style: {
+                color: "#ff1493",
+              },
+
+              // native 속성 설정
+              attrs: {
+                // id 속성
+                id: "my-button-component",
+              },
+            },
+
+            // 자식 VNode
+            [
+              // default slot 사용
+              this.$slots.default,
+            ],
+          );
+        },
+      });
+
+      new Vue({
+        el: "#myApp",
+
+        render(createElement) {
+          return createElement(
+            // 태그명
+            "div",
+
+            // 자식 VNode
+            [
+              // 자식 VNode - <h1>
+              createElement(
+                // 태그명
+                "h1",
+
+                // 자식 VNode
+                [
+                  // innerText 역할의 자식 VNode
+                  "createElement() 예시 코드 입니다.",
+                ],
+              ),
+
+              // 자식 VNode - <my-button>
+              createElement(
+                // 태그명
+                "my-button",
+
+                // 템플릿 속성
+                {
+                  // 버튼 inline 스타일
+                  style: {
+                    "display": "block",
+                    "margin": "0 auto",
+                  },
+
+                  // HTMLButtonElement Event 설정
+                  nativeOn: {
+                    // click Event Listener 등록
+                    click: () => {
+                      console.log("my-button 클릭 !!");
+                    },
+                  },
+                },
+
+                // 자식 VNode
+                [
+                  // innerText 역할의 자식 VNode
+                  "click me !",
+                ],
+              ),
+            ],
+          );
+        },
+      });
+    </script>
+  </body>
+</html>

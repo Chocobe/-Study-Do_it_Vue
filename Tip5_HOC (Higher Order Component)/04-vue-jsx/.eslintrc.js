@@ -12,14 +12,14 @@ module.exports = {
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
 
     "prettier/prettier": [
-      "warn",
+      "error",
       {
         singleQuote: false,
         semi: true,
         useTabs: false,
         tabWidth: 2,
         trailingComma: "all",
-        printWidth: 100,
+        printWidth: 80,
         bracketSpacing: true,
         arrowParens: "avoid",
       },

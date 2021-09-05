@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Render 함수</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  
+  <body>
+    <!-- Vue 프레임워크 진입점 -->
+    <div id="myApp"></div>
+
+    <script>
+      Vue.component("anchored-heading", {
+        props: {
+          level: {
+            type: Number,
+            required: true,
+          },
+        },
+
+        // template 대신, render() 함수 사용
+        render(h) {
+          return h(
+            `h${this.level}`, // 태그명
+            this.$slots.default, // 자식 요소 (slot)
+          );
+        },
+      });
+
+      new Vue({
+        el: "#myApp",
+
+        template: `
+          <anchored-heading :level="1">
+            <a href="#">Hello World</a>
+          </anchored-heading>
+        `,
+      });
+    </script>
+  </body>
+</html>

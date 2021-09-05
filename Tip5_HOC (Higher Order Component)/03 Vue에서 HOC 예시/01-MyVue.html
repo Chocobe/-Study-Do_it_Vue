@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Render 함수</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <!-- Vue 프레임워크 진입점 -->
+    <div id="app"></div>
+
+    <!-- <anchored-heading> 컴포넌트 template -->
+    <script type="text/x-template" id="anchored-heading-template">
+      <h1 v-if="level === 1">
+        <slot />
+      </h1>
+
+      <h2 v-else-if="level === 2">
+        <slot />
+      </h2>
+
+      <h3 v-else-if="level === 3">
+        <slot />
+      </h3>
+
+      <h4 v-else-if="level === 4">
+        <slot />
+      </h4>
+
+      <h5 v-else-if="level === 5">
+        <slot />
+      </h5>
+
+      <h6 v-else-if="level === 6">
+        <slot />
+      </h6>
+    </script>
+
+    <script>
+      Vue.component("AnchoredHeading", {
+        template: "#anchored-heading-template",
+        
+        props: {
+          level: {
+            type: Number,
+            required: true,
+          },
+        },
+      });
+      
+      new Vue({
+        el: "#app",
+        
+        name: "MyApp",
+
+        template: `
+          <anchored-heading :level="1">
+            <a href="#">Hello World</a>
+          </anchored-heading>
+        `
+      });
+    </script>
+  </body>
+</html>
